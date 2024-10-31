@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from utils.decorators import validate_schema
+from utils.decorators import validate_schema, permission_required
 from schemas.request.UserSchema import RegisterUserSchema, RegisterStaffSchema, LoginUserSchema, UpdateUserSchema, PasswordChangeSchema
 from schemas.response.UserResponseSchema import ResponseRegisterUser, ResponseUserDetails, ResponseUserUpdate
 from managers.UserManager import UserManager
@@ -16,6 +16,8 @@ class RegisterUser(Resource):
 
 
 class RegisterStaff(Resource):
+    @auth.login_required
+    @permission_required()
     @validate_schema(RegisterStaffSchema)
     def post(self):
         data = request.get_json()

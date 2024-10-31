@@ -1,18 +1,11 @@
-from flask import Flask, request, Response
-from flask_cors import CORS
-from flask_migrate import Migrate
-from flask_restful import Api
+from decouple import config
+from flask import request, Response, jsonify
 
 from DataBase import db
-from resources.routes import routes
-from config import DevelopmentConfig
+from config import create_app
 
-app = Flask(__name__)
-app.config.from_object(DevelopmentConfig)
-db.init_app(app)
-api = Api(app)
-migrate = Migrate(app, db)
-CORS(app)
+environment = config("CONFIG_ENV")
+app = create_app(environment)
 
 
 @app.before_request
@@ -23,13 +16,23 @@ def handle_preflight():
         return res
 
 
+@app.teardown_request
+def commit_transaction_on_teardown(exception=None):
+    if exception is None:
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            return jsonify({"error": "An error occurred while saving data. Please try again later."}), 500
+    else:
+        db.session.rollback()
+        return jsonify({"error": "An unexpected error occurred. Please contact support if the issue persists."}), 500
+
+
 @app.teardown_appcontext
-def close_request(response):
-    db.session.commit()
+def shutdown_session(response):
+    db.session.remove()
     return response
-
-
-[api.add_resource(*route) for route in routes]
 
 
 if __name__ == '__main__':
