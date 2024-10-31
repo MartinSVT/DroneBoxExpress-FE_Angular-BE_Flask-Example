@@ -1,6 +1,7 @@
 import re
 from marshmallow import Schema, fields, validates_schema, ValidationError, validate, validates
 from models.UserModel import UserModel
+from managers.auth import auth
 
 
 def must_not_be_blank(data):
@@ -75,13 +76,17 @@ class UpdateUserSchema(Schema):
 
     @validates("username")
     def validates_username(self, username):
-        if UserModel.query.filter(UserModel.username == username).first():
-            raise ValidationError("That username is taken", field_names=["username"], )
+        user = auth.current_user()
+        if username != user.username:
+            if UserModel.query.filter(UserModel.username == username).first():
+                raise ValidationError("That username is taken", field_names=["username"], )
 
     @validates("email")
     def validates_email(self, email):
-        if UserModel.query.filter(UserModel.email == email).first():
-            raise ValidationError("That email is taken", field_names=["email"], )
+        user = auth.current_user()
+        if email != user.email:
+            if UserModel.query.filter(UserModel.email == email).first():
+                raise ValidationError("That email is taken", field_names=["email"], )
 
 
 class PasswordChangeSchema(Schema):

@@ -18,13 +18,12 @@ def validate_schema(schema_name):
     return decorator
 
 
-def permission_required(required_role):
+def permission_required():
     def decorator(func):
         def wrapper(*args, **kwargs):
             current_user = auth.current_user()
-
-            if current_user.role != required_role:
-                raise Forbidden("You do not have permissions to access this resource")
+            if not current_user.is_staff:
+                raise Forbidden("You do not have permissions")
             return func(*args, **kwargs)
         return wrapper
     return decorator

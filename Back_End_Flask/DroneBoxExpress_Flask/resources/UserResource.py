@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask import request
 from utils.decorators import validate_schema
 from schemas.request.UserSchema import RegisterUserSchema, RegisterStaffSchema, LoginUserSchema, UpdateUserSchema, PasswordChangeSchema
+from schemas.response.UserResponseSchema import ResponseRegisterUser, ResponseUserDetails, ResponseUserUpdate
 from managers.UserManager import UserManager
 from managers.auth import auth
 
@@ -11,7 +12,7 @@ class RegisterUser(Resource):
     def post(self):
         data = request.get_json()
         user = UserManager.register_user(data)
-        return user, 201
+        return ResponseRegisterUser().dump(user), 201
 
 
 class RegisterStaff(Resource):
@@ -19,7 +20,7 @@ class RegisterStaff(Resource):
     def post(self):
         data = request.get_json()
         user = UserManager.register_staff(data)
-        return user, 201
+        return ResponseRegisterUser().dump(user), 201
 
 
 class Login(Resource):
@@ -34,7 +35,7 @@ class UserDetails(Resource):
     @auth.login_required
     def get(self):
         user = UserManager.user_details()
-        return user
+        return ResponseUserDetails().dump(user), 200
 
 
 class UserUpdate(Resource):
@@ -45,7 +46,7 @@ class UserUpdate(Resource):
         data = request.get_json()
         if user.id == id_:
             new_user_data = UserManager.update_user(data)
-            return new_user_data
+            return ResponseUserUpdate().dump(new_user_data), 201
         else:
             return "Not Authorized"
 
