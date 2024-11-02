@@ -1,0 +1,17 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading" >Delete News Article Page</h1>
+        <div class="form_flex">
+            <h2>{{currentNewsArticle.article_title}}</h2>
+            <p>{{currentNewsArticle.article_content}}</p>
+            <p>Last Updated At: {{currentNewsArticle.updated_date}}</p>
+            <p>Created on: {{currentNewsArticle.created_date}}</p>
+            <br>
+            <h2 style="color: orange; margin: auto;">Are You Sure you want to Delete</h2>
+            <div class="form_buttons_div">
+            <button class="a_button_inside" (click)="deleteCurrentNewsArticle(currentNewsArticle.id)">YES</button>
+            <a class="a_button_inside" routerLink="/home">NO</a>
+            </div>
+        </div>
+    </section>
+</section>

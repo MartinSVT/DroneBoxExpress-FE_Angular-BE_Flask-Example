@@ -1,0 +1,89 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading">Edit Profile</h1>
+            <form class="form_flex" [formGroup]="edithForm" (ngSubmit)="updateUser()">
+                <!-- Username Field -->
+                <label for="username">Username:</label>
+                <input 
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Username..."
+                    formControlName="username"
+                />
+                <ng-container *ngIf="edithForm.get('username')?.touched">
+                    <p style="color: red;" *ngIf="edithForm.get('username')?.errors?.['required']">Username is required!</p>
+                    <p style="color: red;" *ngIf="edithForm.get('username')?.errors?.['minlength']">Username must be at least 2 characters!</p>
+                </ng-container>
+                <!-- Email Field -->
+                <label for="email">Email:</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email adress..."
+                    formControlName="email"
+                />
+                <ng-container *ngIf="edithForm.get('email')?.touched">
+                    <p style="color: red;" *ngIf="edithForm.get('email')?.errors?.['required']">Email is required!</p>
+                    <p style="color: red;" *ngIf="edithForm.get('email')?.errors?.['email']">Email is not valid!</p>
+                </ng-container>
+                <!-- First Name Field -->
+                <label for="firstName">First Name:</label>
+                <input 
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    formControlName="firstName"
+                />
+                <ng-container *ngIf="edithForm.get('firstName')?.touched">
+                    <p style="color: red;" *ngIf="edithForm.get('firstName')?.errors?.['required']">First Name is required!</p>
+                    <p style="color: red;" *ngIf="edithForm.get('firstName')?.errors?.['minlength']">FirstName must be at least 2 characters!</p>
+                </ng-container>
+                <!-- Last Name Field -->
+                <label for="lastName">Last Name:</label>
+                <input 
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    placeholder="Last Name..."
+                    formControlName="lastName"
+                />
+                <ng-container *ngIf="edithForm.get('lastName')?.touched">
+                    <p style="color: red;" *ngIf="edithForm.get('lastName')?.errors?.['required']">Last Name is required!</p>
+                    <p style="color: red;" *ngIf="edithForm.get('lastName')?.errors?.['minlength']">Last must be at least 2 characters!</p>
+                </ng-container>
+                
+<!-- Logic for Changing Password to be implemented !!!
+                <ng-container formGroupName="passGroup">
+                    <label for="password1">New Password:</label>
+                    <input
+                        type="password"
+                        name="password1"
+                        id="password1"
+                        placeholder="*******"
+                        formControlName="password1"
+                    />
+                    <label for="password2">Repeat Password:</label>
+                    <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        placeholder="*******"
+                        formControlName="password2"
+                    />
+                    <ng-container *ngIf="passGroup?.get('password2')?.touched">
+                        <p 
+                        style="color: red;" 
+                        *ngIf="passGroup?.errors?.['matchPassVal'] || passGroup?.get('password2')?.errors?.['required']"
+                        >Passwords must be the same!</p>
+                    </ng-container>
+                </ng-container> -->
+
+                <div class="form_buttons_div">
+                    <button class="a_button_inside" [disabled]="edithForm.invalid">Save</button>
+                    <a class="a_button_inside" routerLink="/viewProfile">Back</a>
+                </div>
+            </form>
+    </section>
+</section>

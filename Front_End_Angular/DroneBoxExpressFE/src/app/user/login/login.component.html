@@ -1,0 +1,44 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading">Login Page</h1>
+        <form class="form_flex" #loginForm="ngForm" (ngSubmit)="login(loginForm)" >
+            <label for="username">Username:</label>
+            <input 
+                type="text"
+                name="username"
+                id="username"
+                ngModel
+                #inputUsername="ngModel"
+                required
+            />
+            <ng-container *ngIf="inputUsername.touched">
+                <p style="color: red;" *ngIf="inputUsername.errors?.['required']">Username is required!</p>
+            </ng-container>
+
+            <label for="password">Password:</label>
+            <input 
+                type="password"
+                name="password"
+                id="password"
+                placeholder="******"
+                ngModel
+                #inputPassword="ngModel"
+                required
+                minlength="2"
+            />
+            <ng-container *ngIf="inputPassword.touched">
+                <p style="color: red;" *ngIf="inputPassword.errors?.['required']">Password is required!</p>
+                <p style="color: red;" *ngIf="inputPassword.errors?.['minlength']">Password must be at least 2 characters!</p>
+              </ng-container>
+
+            <div class="form_buttons_div">
+                <button 
+                    class="a_button_inside" 
+                    [disabled]="loginForm.invalid"
+                >Log in</button>
+                <a class="a_button_inside" routerLink="/register">Register</a>
+                <a class="a_button_inside" routerLink="/home">Back</a>
+            </div>
+        </form>
+    </section>
+</section>

@@ -1,0 +1,26 @@
+<section class="main_section">
+    <section class="home_section">
+        <h1 class="section_heading">Profile Details</h1>
+        <div class="profile_div">
+            <img src="../../../assets/def_prof_pic.jpg" alt="">
+
+            <div class="profile_data_div">
+                <p>Username: {{CurrentUserData.username}}</p>
+                <p>First Name: {{CurrentUserData.first_name}}</p>
+                <p>Last Name: {{CurrentUserData.last_name}}</p>
+                <p>Email: {{CurrentUserData.email}}</p>
+                <ng-container *ngIf="CurrentUserData.is_staff">
+                    <p>Profile Type: Staff</p>
+                </ng-container>
+                <ng-container *ngIf="!CurrentUserData.is_staff">
+                    <p>Profile Type: Customer</p>
+                </ng-container>
+                <div class="form_buttons_div">
+                    <a class="a_button_inside" routerLink="/edithProfile">Edit</a>
+                    <a class="a_button_inside" routerLink="/deleteProfile">Delete</a>
+                    <a class="a_button_inside" routerLink="/home">Back</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

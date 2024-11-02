@@ -1,0 +1,28 @@
+<section class="main_section">
+    <section class="home_section">
+    <h1 class="section_heading">Latest News and Updates</h1>
+        <ng-container *ngIf="news">
+            <ng-container *ngFor="let article of news">
+                <article class="news_article">
+                    <h2>{{ article.article_title }}</h2>
+                    <div>{{ article.article_content }}</div>
+                    <p>Last Updated At: {{ article.updated_date }}</p>
+                    <p>Created On: {{ article.created_date }}</p>
+                    <ng-container *ngIf="isLoggedIn">
+                    <ng-container *ngIf="CurrentUserData.is_staff && article.article_user == CurrentUserData.id">
+                        <div>
+                            <a class="a_button_inside" routerLink="/editArticle/{{article.id}}">Edit Article</a>
+                            <a class="a_button_inside" routerLink="/deleteArticle/{{article.id}}">Delete Article</a>
+                        </div>
+                    </ng-container>
+                    </ng-container>
+                </article>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!news">
+            <article class="news_article">
+                <h1 class="section_heading"> There are currently no articles</h1>
+            </article>
+        </ng-container>
+    </section>
+</section>

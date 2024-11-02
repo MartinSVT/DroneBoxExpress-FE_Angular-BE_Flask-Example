@@ -1,0 +1,40 @@
+<header class="base_header">
+    <nav class="base_nav">
+        <div class="general_nav">
+            <a routerLink="/home">Home</a>
+            <a routerLink="/contacts">Contacts</a>
+            <a routerLink="/about">About Us</a>
+        </div>
+        <div class="logo">
+            <a routerLink="/home">
+                <img class="logo_img" src="../../../assets/DBE_logo.jpg" alt="">
+            </a>
+            <p *ngIf="isLoggedIn"> Hello {{CurrentUserData.username}}</p>
+            <p *ngIf="!isLoggedIn"> Hello Guest</p>
+        </div>
+        <div class="type_nav">
+                <ng-container *ngIf="isLoggedIn">
+                    <ng-container *ngIf="CurrentUserData.is_staff==true">
+                        <a routerLink="/operations">Operations</a>
+                        <a routerLink="/addArticle">Add Article</a> 
+                    </ng-container>  
+                </ng-container>   
+                <ng-container *ngIf="isLoggedIn">
+                    <ng-container *ngIf="!CurrentUserData.is_staff==true">
+                        <a routerLink="/orders">Orders</a>
+                    </ng-container>  
+                </ng-container>   
+                <ng-container *ngIf="isLoggedIn">
+                    <ng-container *ngIf="CurrentUserData.is_staff==true">
+                         <a routerLink="/staffOrders">Orders</a>
+                    </ng-container>  
+                </ng-container> 
+                <a *ngIf="isLoggedIn" routerLink="/viewProfile">Profile</a>
+                <a *ngIf="isLoggedIn" routerLink="/logout">Logout</a>
+                <a *ngIf="!isLoggedIn" routerLink="/register">Register</a>
+                <a *ngIf="!isLoggedIn" routerLink="/login">Login</a>
+        </div>
+    </nav>
+    <div class="prof_logo">
+        <img src="../../../assets/def_prof_pic.jpg" alt="">
+    </div>

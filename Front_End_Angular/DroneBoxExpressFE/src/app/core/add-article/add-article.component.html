@@ -1,0 +1,37 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading">Create an Article</h1>
+        <form class="form_flex" [formGroup]="createArticleForm" (ngSubmit)="CreateNewsArticle()">
+            <label for="article_title">News Article Title:</label>
+            <input 
+                type="text"
+                name="article_title"
+                id="article_title"
+                placeholder="Article Title..."
+                formControlName="article_title"
+            />
+            <ng-container *ngIf="createArticleForm.get('article_title')?.touched">
+                <p style="color: red;" *ngIf="createArticleForm.get('article_title')?.errors?.['required']">Article title is required!</p>
+                <p style="color: red;" *ngIf="createArticleForm.get('article_title')?.errors?.['minlength']">Article title must be at least 2 characters!</p>
+            </ng-container>
+
+            <label for="article_content">News Article Content:</label>
+            <textarea 
+                rows="10"               
+                type="text"
+                name="article_content"
+                id="article_content"
+                placeholder="Article Content..."
+                formControlName="article_content"></textarea> 
+            <ng-container *ngIf="createArticleForm.get('article_content')?.touched">
+                <p style="color: red;" *ngIf="createArticleForm.get('article_content')?.errors?.['required']">Article Content is required!</p>
+                <p style="color: red;" *ngIf="createArticleForm.get('article_content')?.errors?.['minlength']">Article Content must be at least 2 characters!</p>
+            </ng-container>
+
+            <div class="form_buttons_div">
+                <button class="a_button_inside" [disabled]="createArticleForm.invalid">Create</button>
+                <a class="a_button_inside" routerLink="/home">Back</a>
+            </div>
+        </form>
+    </section>
+</section>
