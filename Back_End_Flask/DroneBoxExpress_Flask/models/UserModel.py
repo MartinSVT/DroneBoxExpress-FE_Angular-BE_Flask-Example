@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import List
 from sqlalchemy import func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from DataBase import db
+from models import NewsArticleModel
 
 
 class UserModel(db.Model):
@@ -14,3 +16,10 @@ class UserModel(db.Model):
     last_name: Mapped[str] = mapped_column(db.String(255), nullable=True)
     is_staff: Mapped[bool] = mapped_column(unique=False, default=False)
     date_joined: Mapped[datetime] = mapped_column(db.DateTime(timezone=True), server_default=func.now())
+
+    news_articles: Mapped[List["NewsArticleModel"]] = relationship(
+        "NewsArticleModel",
+        back_populates="user",
+        cascade="all, delete",
+        passive_deletes=True,
+    )

@@ -2,11 +2,7 @@ import re
 from marshmallow import Schema, fields, validates_schema, ValidationError, validate, validates
 from models.UserModel import UserModel
 from managers.auth import auth
-
-
-def must_not_be_blank(data):
-    if not data:
-        raise ValidationError("Data not provided.")
+from utils.schema_validators import must_not_be_blank
 
 
 def validate_password(value):
