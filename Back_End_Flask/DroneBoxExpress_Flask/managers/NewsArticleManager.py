@@ -35,3 +35,21 @@ class NewsArticleManager:
         except Exception as ex:
             raise BadRequest(str(ex))
 
+    @staticmethod
+    def update_article(data, id_):
+        current_article = NewsArticleManager.get_single_article(id_)
+        if data["article_user"] == current_article.article_user:
+            if data["article_title"] != current_article.article_title:
+                current_article.article_title = data["article_title"]
+            if data["article_content"] != current_article.article_content:
+                current_article.article_content = data["article_content"]
+            db.session.add(current_article)
+            db.session.flush()
+            return current_article
+        else:
+            raise Unauthorized("Not Authorized")
+
+    @staticmethod
+    def delete_article(id_):
+        NewsArticleManager.get_single_article(id_)
+        db.session.execute(db.delete(NewsArticleModel).filter_by(id=id_))

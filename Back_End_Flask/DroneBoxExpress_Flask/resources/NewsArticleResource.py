@@ -24,9 +24,23 @@ class CreateNewsArticle(Resource):
         return NewsResponseSchema().dump(new_news_article), 201
 
 
-class NewsArticleDetails(Resource):
+class NewsArticleDetailsUpdateDelete(Resource):
     @auth.login_required
     @permission_required()
     def get(self, id_):
         current_news_article = NewsArticleManager.get_single_article(id_)
         return NewsResponseSchema().dump(current_news_article), 200
+
+    @auth.login_required
+    @permission_required()
+    def put(self, id_):
+        data = request.get_json()
+        updated_news_article = NewsArticleManager.update_article(data, id_)
+        return NewsResponseSchema().dump(updated_news_article), 201
+
+    @auth.login_required
+    @permission_required()
+    def delete(self, id_):
+        NewsArticleManager.delete_article(id_)
+        return 204
+

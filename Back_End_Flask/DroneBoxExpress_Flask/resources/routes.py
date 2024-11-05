@@ -1,5 +1,5 @@
 from resources.UserResource import RegisterUser, Login, RegisterStaff, UserDetails, UserUpdate, DeleteUser, ChangePassword
-from resources.NewsArticleResource import ListAllNews, CreateNewsArticle, NewsArticleDetails
+from resources.NewsArticleResource import ListAllNews, CreateNewsArticle, NewsArticleDetailsUpdateDelete
 
 routes = (
     (RegisterUser, "/register-user"),
@@ -11,5 +11,5 @@ routes = (
     (ChangePassword, "/user-change-password"),
     (ListAllNews, "/news"),
     (CreateNewsArticle, "/add-news"),
-    (NewsArticleDetails, "/news/<int:id_>/"),
+    (NewsArticleDetailsUpdateDelete, "/news/<int:id_>/"),
 )
