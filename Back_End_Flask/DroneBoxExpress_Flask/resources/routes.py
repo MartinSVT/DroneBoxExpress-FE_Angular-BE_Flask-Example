@@ -1,5 +1,6 @@
 from resources.AirportResource import CreateListAirport, AirportDetailsUpdateDelete
 from resources.NewsArticleResource import ListAllNews, CreateNewsArticle, NewsArticleDetailsUpdateDelete
+from resources.OrdersResource import CreateListOrders, OrdersDetailsUpdateDelete
 from resources.RoutesResource import CreateListRoute, RouteDetailsUpdateDelete
 from resources.UserResource import RegisterUser, Login, RegisterStaff, UserDetails, UserUpdate, DeleteUser, \
     ChangePassword
@@ -19,4 +20,6 @@ routes = (
     (AirportDetailsUpdateDelete, "/airports/<int:id_>/"),
     (CreateListRoute, "/routes"),
     (RouteDetailsUpdateDelete, "/routes/<int:id_>/"),
+    (CreateListOrders, "/orders"),
+    (OrdersDetailsUpdateDelete, "/orders/<int:id_>/"),
 )

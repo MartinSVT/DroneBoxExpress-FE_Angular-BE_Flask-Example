@@ -4,6 +4,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from DataBase import db
 from models import NewsArticleModel
+from models import OrdersModel
 
 
 class UserModel(db.Model):
@@ -19,7 +20,16 @@ class UserModel(db.Model):
 
     news_articles: Mapped[List["NewsArticleModel"]] = relationship(
         "NewsArticleModel",
+        foreign_keys="[NewsArticleModel.article_user]",
         back_populates="user",
+        cascade="all, delete",
+        passive_deletes=True,
+    )
+
+    user_orders: Mapped[List["OrdersModel"]] = relationship(
+        "OrdersModel",
+        foreign_keys="[OrdersModel.order_user]",
+        back_populates="o_user",
         cascade="all, delete",
         passive_deletes=True,
     )

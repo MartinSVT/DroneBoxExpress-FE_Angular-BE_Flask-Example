@@ -1,6 +1,8 @@
+from typing import List
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from DataBase import db
-from models import AirportModel
+from models import AirportModel, OrdersModel
 
 
 class RoutesModel(db.Model):
@@ -20,4 +22,12 @@ class RoutesModel(db.Model):
         "AirportModel",
         foreign_keys=[destination_airport],
         back_populates="route_destination"
+    )
+
+    route_orders: Mapped[List["OrdersModel"]] = relationship(
+        "OrdersModel",
+        foreign_keys="[OrdersModel.order_route]",
+        back_populates="o_route",
+        cascade="all, delete",
+        passive_deletes=True,
     )
