@@ -33,6 +33,7 @@ class NewsArticleDetailsUpdateDelete(Resource):
 
     @auth.login_required
     @permission_required()
+    @validate_schema(CreateNewsArticleSchema)
     def put(self, id_):
         data = request.get_json()
         updated_news_article = NewsArticleManager.update_article(data, id_)
@@ -43,4 +44,3 @@ class NewsArticleDetailsUpdateDelete(Resource):
     def delete(self, id_):
         NewsArticleManager.delete_article(id_)
         return 204
-
