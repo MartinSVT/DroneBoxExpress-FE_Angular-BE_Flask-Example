@@ -1,0 +1,59 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading"> Order Details </h1>
+        <div class="form_flex">
+            <p class="main_ops_section">
+                <span>Order No.:</span>
+                <span>{{ order.id }}</span>
+            </p>
+            <p class="main_ops_section">
+                <span>Weight:</span>
+                <span>{{ order.weight }}</span>
+            </p>
+            <p class="main_ops_section">
+                <span>From &#187;</span>
+                <span>{{ originAirport.airport_name }}</span>
+            </p>
+            <p class="main_ops_section">
+                <span>To &#187;</span>
+                <span>{{ destinationAirport.airport_name }}</span>
+            </p>
+            <p class="main_ops_section">
+                <span>Price:</span>
+                <span>{{ order.cost }}</span>
+            </p>
+            <ng-container *ngIf="CurrentUserData.is_staff">
+                <p class="main_ops_section">
+                    <span>Profile:</span>
+                    <span>{{ order.order_user }}</span>
+                </p>
+            </ng-container>
+            <ng-container *ngIf="!CurrentUserData.is_staff">
+                <p class="main_ops_section">
+                    <span>Profile:</span>
+                    <span>{{ CurrentUserData.username }}</span>
+                </p>
+            </ng-container>
+
+            <p class="main_ops_section">
+                <span>Order Status:</span>
+                <span>{{ order.order_status }}</span>
+            </p>
+            <div class="form_buttons_div">
+
+                <ng-container></ng-container>
+                <ng-container *ngIf="order.order_status==='Scheduled'">
+                    <ng-container *ngIf="CurrentUserData.is_staff">
+                        <a class="a_button_inside" routerLink="/completeOrder/{{order.id}}">Complete</a>
+                    </ng-container>
+                    <ng-container *ngIf="!CurrentUserData.is_staff">
+                        <a class="a_button_inside" routerLink="/editOrder/{{order.id}}">Edit</a>
+                    </ng-container>
+                    <a class="a_button_inside" routerLink="/deleteOrder/{{order.id}}">Delete</a>
+                </ng-container>
+                    <a class="a_button_inside" *ngIf="CurrentUserData.is_staff" routerLink="/staffOrders">Back</a>
+                    <a class="a_button_inside" *ngIf="!CurrentUserData.is_staff" routerLink="/orders">Back</a>
+            </div>
+        </div>
+    </section>
+</section>

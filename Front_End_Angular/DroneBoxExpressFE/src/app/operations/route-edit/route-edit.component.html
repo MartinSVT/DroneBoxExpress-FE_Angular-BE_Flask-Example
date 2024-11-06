@@ -1,0 +1,58 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading">Create a New Route</h1>
+        <form class="form_flex" [formGroup]="updateRouteForm" (ngSubmit)="updateRoute()">
+            <ng-container formGroupName="airportsGroup">
+
+                <label for="origin_airport">Origin Airport:</label>
+                <select name="origin_airport" id="origin_airport" placeholder="Select Airport" formControlName="origin_airport" required>
+                    <ng-container *ngFor="let airport of airports">
+                        <option value="{{airport.id}}">
+                        {{ airport.airport_name }}
+                        </option>
+                    </ng-container>
+                </select>
+
+                <label for="destination_airport">Destination Airport:</label>
+                <select name="destination_airport" id="destination_airport" placeholder="Select Airport" formControlName="destination_airport" required>
+                    <ng-container *ngFor="let airport of airports">
+                        <option value="{{airport.id}}">
+                        {{ airport.airport_name }}
+                        </option>
+                    </ng-container>
+                </select>
+
+                <ng-container *ngIf="airportsGroup?.get('origin_airport')?.touched">
+                    <p style="color: red;" *ngIf="airportsGroup?.get('origin_airport')?.errors?.['required']">
+                        Origin Airport is Required</p>
+                </ng-container>
+
+                <ng-container *ngIf="airportsGroup?.get('destination_airport')?.touched">
+                    <p style="color: red;" *ngIf="airportsGroup?.errors?.['airportPassVal']">
+                        Origin and Destination cannot be the same</p>
+                    <p style="color: red;" *ngIf="airportsGroup?.get('destination_airport')?.errors?.['required']">
+                        Destination Airport is Required</p>
+                </ng-container>
+
+            </ng-container>
+
+            <label for="cost_per_kg">Cost Per Kilogram:</label>
+            <input 
+                type="number"
+                name="cost_per_kg"
+                id="cost_per_kg"
+                placeholder="Cost per kg"
+                formControlName="cost_per_kg"
+                min="0.01"
+            />
+            <ng-container *ngIf="updateRouteForm.get('cost_per_kg')?.touched">
+                <p style="color: red;" *ngIf="updateRouteForm.get('cost_per_kg')?.errors?.['required']">Numerical Value is required!</p>
+                <p style="color: red;" *ngIf="updateRouteForm.get('cost_per_kg')?.errors?.['min']">Cost must be at positive number!</p>
+            </ng-container>
+            <div class="form_buttons_div">
+                <button class="a_button_inside" [disabled]="updateRouteForm.invalid">Save</button>
+                <a class="a_button_inside" routerLink="/operations">Back</a>
+            </div>
+        </form>
+    </section>
+</section>

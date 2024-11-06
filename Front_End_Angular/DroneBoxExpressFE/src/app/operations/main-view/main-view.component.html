@@ -1,0 +1,49 @@
+<section class="main_section">
+    <h1 class="section_heading">Operations</h1>
+    <section class="main_ops_section">
+        <div class="routes_div ops_div">
+            <h2 class="section_heading_h2" >Routes Menu</h2>
+            <a class="a_button_inside" routerLink="/addRoute">Add Route</a>
+                <ng-container *ngFor="let route of routes">
+                        <article class="ops_card" >
+                            <ng-container *ngFor="let airport of airports">
+                                <ng-container *ngIf="airport.id===route.origin_airport">  
+                                    <p>From &#187; {{ airport.airport_name }}</p>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngFor="let airport of airports">
+                                <ng-container *ngIf="airport.id===route.destination_airport">  
+                                    <p>To &#187; {{ airport.airport_name }}</p>
+                                </ng-container>
+                            </ng-container>
+                            <p>Cost per kilogram: {{ route.cost_per_kg }} BGN</p>
+                            <div class="ops_div_buttons">
+                                <a class="a_button_inside" routerLink="/editRoute/{{route.id}}">Edit</a>
+                                <a class="a_button_inside" routerLink="/deleteRoute/{{route.id}}">Delete</a>
+                            </div>
+                        </article>
+                </ng-container>
+                <div *ngIf="routes.length === 0">
+                    There are no Routes
+                </div>
+        </div>
+        <div class="airports_div ops_div">
+            <h2 class="section_heading_h2" >Airports Menu</h2>
+            <a class="a_button_inside" routerLink="/addAirport">Add Airport</a>
+                <ng-container *ngFor="let airport of airports">
+                        <article class="ops_card" >
+                            <p>Name: {{ airport.airport_name }}</p>
+                            <p>Longitude: {{ airport.longitude }}</p>
+                            <p>Latitude: {{ airport.latitude }}</p>
+                            <div class="ops_div_buttons">
+                                <a class="a_button_inside" routerLink="/editAirport/{{airport.id}}">Edit</a>
+                                <a class="a_button_inside" routerLink="/deleteAirport/{{airport.id}}">Delete</a>
+                            </div>
+                        </article>
+                </ng-container>
+                <div *ngIf="airports.length === 0">
+                    There are no Airports
+                </div>
+        </div>
+    </section>
+</section>

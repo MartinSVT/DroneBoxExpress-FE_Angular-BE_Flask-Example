@@ -1,0 +1,61 @@
+<ng-container *ngIf="CurrentUserData.is_staff">
+<section class="main_section">
+    <h1 class="section_heading">Orders Page</h1>
+    <br>
+        <div class="orders-info">
+            <div class="orders-details" id="orders-window">
+                    <section class="scheduled-orders">
+                        <h2 class="section_heading_h2">Scheduled Orders</h2>
+                        <ng-container *ngFor="let order of orders">
+                            <ng-container *ngIf="order.order_status==='Scheduled'">
+                                <article class="ops_card">
+                                    <p>Order No.: {{ order.id }}</p>
+                                    <p>Weight: {{ order.weight }} kg</p>
+                                    <ng-container *ngFor="let route of routes">
+                                    <ng-container *ngIf="order.order_route===route.id">  
+                                        <ng-container *ngFor="let airport of airports">
+                                            <p *ngIf="route.origin_airport===airport.id">From &#187; {{ airport.airport_name }}</p>
+                                            <p *ngIf="route.destination_airport===airport.id">To &#187; {{ airport.airport_name }}</p>
+                                        </ng-container>
+                                    </ng-container> 
+                                    </ng-container>
+                                    <p>Price: {{ order.cost }} BGN</p>
+                                    <div class="ops_div_buttons">
+                                        <a class="a_button_inside" routerLink="/viewOrder/{{order.id}}">Details</a>
+                                    </div>
+                                </article>
+                            </ng-container> 
+                        </ng-container>
+                    </section>
+                    <section class="completed-orders">
+                        <h2 class="section_heading_h2">Completed Orders</h2>
+                        <ng-container *ngFor="let order of orders">
+                            <ng-container *ngIf="order.order_status==='Completed'">
+                                <article class="ops_card">
+                                    <p>Order No.: {{ order.id }}</p>
+                                    <p>Weight: {{ order.weight }} kg</p>
+                                    <ng-container *ngFor="let route of routes">
+                                    <ng-container *ngIf="order.order_route===route.id">  
+                                        <ng-container *ngFor="let airport of airports">
+                                            <p *ngIf="route.origin_airport===airport.id">From &#187; {{ airport.airport_name }}</p>
+                                            <p *ngIf="route.destination_airport===airport.id">To &#187; {{ airport.airport_name }}</p>
+                                        </ng-container>
+                                    </ng-container> 
+                                    </ng-container>
+                                    <p>Price: {{ order.cost }} BGN</p>
+                                    <div class="ops_div_buttons">
+                                        <a class="a_button_inside" routerLink="/viewOrder/{{order.id}}">Details</a>
+                                    </div>
+                                </article>
+                            </ng-container> 
+                        </ng-container>
+                    </section>
+            </div>
+        </div>
+    </section>
+</ng-container>
+<ng-container *ngIf="!CurrentUserData.is_staff">
+    <section class="main_section">
+        <h1 class="section_heading">You are Not Authorized to see this page</h1>
+    </section>
+</ng-container>

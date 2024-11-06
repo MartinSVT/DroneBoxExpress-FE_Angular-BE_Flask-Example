@@ -1,0 +1,67 @@
+
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading" >Create Order</h1>
+            <form class="form_flex" [formGroup]="newOrderForm" (ngSubmit)="createOrder()">
+                <label for="route">Route:</label>
+                <select name="route" id="route" placeholder="Select Route" formControlName="route" required>
+                    <ng-container *ngFor="let route of routes">
+                        <option value="{{route.id}}">
+                        <ng-container *ngFor="let airport of airports">
+                            <ng-container *ngIf="route.origin_airport===airport.id">
+                                <p *ngIf="route.origin_airport===airport.id">{{ airport.airport_name }}_&#187;_</p>
+                                <ng-container *ngFor="let airport of airports">
+                                    <p *ngIf="route.destination_airport===airport.id">{{ airport.airport_name }}</p>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        </option>
+                    </ng-container>
+                </select>
+                <ng-container *ngIf="newOrderForm.get('route')?.touched">
+                    <p style="color: red;" *ngIf="newOrderForm.get('route')?.errors?.['required']">Route is required!</p>
+                </ng-container>
+                <label for="weight">Weight:</label>
+                <input 
+                    type="number"
+                    name="weight"
+                    id="weight"
+                    placeholder="Weight in kg"
+                    formControlName="weight"
+                    min="0.01"
+                    #toCalc
+                />
+                <ng-container *ngIf="newOrderForm.get('weight')?.touched">
+                    <p style="color: red;" *ngIf="newOrderForm.get('weight')?.errors?.['required']">Numerical weight is required!</p>
+                    <p style="color: red;" *ngIf="newOrderForm.get('weight')?.errors?.['min']">Weight must be at positive number!</p>
+                </ng-container>
+                <br>
+                <button class="a_button_inside" (click)="calculateCost($event, toCalc.value)">Calculate</button>
+                <br>
+                <label for="cost">Cost:</label>
+                <input 
+                    type="number"
+                    name="cost"
+                    id="cost"
+                    placeholder="Cost in BGN"
+                    formControlName="cost"
+                    min="0.01"
+                    readonly
+                />
+                <ng-container *ngIf="newOrderForm.get('cost')?.touched">
+                    <p style="color: red;" *ngIf="newOrderForm.get('cost')?.errors?.['required']">Cost is required! - Click Calculate</p>
+                    <p style="color: red;" *ngIf="newOrderForm.get('cost')?.errors?.['min']">Cost must be at positive number!</p>
+                </ng-container>
+                <div class="form_buttons_div">
+
+                    <button 
+                    class="a_button_inside" 
+                    id="order-submit-btn" 
+                    [disabled]="newOrderForm.get('weight')?.touched || newOrderForm.get('route')?.touched || newOrderForm.invalid"
+                    >Create</button>
+
+                    <a class="a_button_inside" routerLink="/orders">Back</a>
+                </div>
+            </form>
+    </section>
+</section>

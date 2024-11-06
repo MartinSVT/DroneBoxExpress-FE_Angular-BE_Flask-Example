@@ -1,0 +1,50 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading" >Add New Airport</h1>
+        <form class="form_flex" [formGroup]="updateAirportForm" (ngSubmit)="updateAirport()">
+            <!-- Name Field -->
+            <label for="name">Name:</label>
+            <input 
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Name..."
+                formControlName="name"
+            />
+            <ng-container *ngIf="updateAirportForm.get('name')?.touched">
+                <p style="color: red;" *ngIf="updateAirportForm.get('name')?.errors?.['required']">Name is required!</p>
+                <p style="color: red;" *ngIf="updateAirportForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters!</p>
+            </ng-container>
+            <!-- Longtitude Field -->
+            <label for="lon">Longitude:</label>
+            <input 
+                type="text"
+                name="lon"
+                id="lon"
+                placeholder="Longitude..."
+                formControlName="lon"
+            />
+            <ng-container *ngIf="updateAirportForm.get('lon')?.touched">
+                <p style="color: red;" *ngIf="updateAirportForm.get('lon')?.errors?.['required']">Longitude is required!</p>
+                <p style="color: red;" *ngIf="updateAirportForm.get('lon')?.errors?.['pattern']">Longitude must be a number!</p>
+            </ng-container>
+            <!-- Latitude Field -->
+            <label for="lat">Latitude:</label>
+            <input 
+                type="text"
+                name="lat"
+                id="lat"
+                placeholder="Latitude..."
+                formControlName="lat"
+            />
+            <ng-container *ngIf="updateAirportForm.get('lat')?.touched">
+                <p style="color: red;" *ngIf="updateAirportForm.get('lat')?.errors?.['required']">Latitude is required!</p>
+                <p style="color: red;" *ngIf="updateAirportForm.get('lat')?.errors?.['pattern']">Latitude must be a number!</p>
+            </ng-container>
+            <div class="form_buttons_div">
+                <button class="a_button_inside" [disabled]="updateAirportForm.invalid">Save</button>
+                <a class="a_button_inside" routerLink="/operations">Back</a>
+            </div>
+        </form>
+    </section>
+</section>

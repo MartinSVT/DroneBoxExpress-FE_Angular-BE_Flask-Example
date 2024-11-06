@@ -1,0 +1,66 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading" >Update Order</h1>
+        <form class="form_flex" [formGroup]="orderUpdateForm" (ngSubmit)="updateOrder()">
+            <label for="route">Route:</label>
+                <select name="route" id="route" placeholder="Select Route" formControlName="route" required>
+                    <ng-container *ngFor="let route of routes">
+                        <option value="{{route.id}}">
+                        <ng-container *ngFor="let airport of airports">
+                            <ng-container *ngIf="route.origin_airport===airport.id">
+                                <p *ngIf="route.origin_airport===airport.id">{{ airport.airport_name }}_&#187;_</p>
+                                <ng-container *ngFor="let airport of airports">
+                                    <p *ngIf="route.destination_airport===airport.id">{{ airport.airport_name }}</p>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        </option>
+                    </ng-container>
+                </select>
+                <ng-container *ngIf="orderUpdateForm.get('route')?.touched">
+                    <p style="color: red;" *ngIf="orderUpdateForm.get('route')?.errors?.['required']">Route is required!</p>
+                </ng-container>
+
+                <label for="weight">Weight:</label>
+                <input 
+                    type="number"
+                    name="weight"
+                    id="weight"
+                    placeholder="Weight in kg"
+                    formControlName="weight"
+                    min="0.01"
+                    #toCalc
+                />
+                <ng-container *ngIf="orderUpdateForm.get('weight')?.touched">
+                    <p style="color: red;" *ngIf="orderUpdateForm.get('weight')?.errors?.['required']">Numerical weight is required!</p>
+                    <p style="color: red;" *ngIf="orderUpdateForm.get('weight')?.errors?.['min']">Weight must be at positive number!</p>
+                </ng-container>
+                <br>
+                <button class="a_button_inside" (click)="calculateCost($event, toCalc.value)">Calculate</button>
+                <br>
+                <label for="cost">Cost:</label>
+                <input 
+                    type="number"
+                    name="cost"
+                    id="cost"
+                    placeholder="Cost in BGN"
+                    formControlName="cost"
+                    min="0.01"
+                    readonly
+                />
+                <ng-container *ngIf="orderUpdateForm.get('cost')?.touched">
+                    <p style="color: red;" *ngIf="orderUpdateForm.get('cost')?.errors?.['required']">Cost is required! - Click Calculate</p>
+                    <p style="color: red;" *ngIf="orderUpdateForm.get('cost')?.errors?.['min']">Cost must be at positive number!</p>
+                </ng-container>
+                <div class="form_buttons_div">
+                    <button 
+                    class="a_button_inside" 
+                    id="order-submit-btn" 
+                    [disabled]="orderUpdateForm.get('weight')?.touched || orderUpdateForm.get('route')?.touched || orderUpdateForm.invalid"
+                    >Save</button>
+
+                    <a class="a_button_inside" routerLink="/viewOrder/{{order.id}}">Back</a>
+                </div>
+        </form>
+    </section>
+</section>

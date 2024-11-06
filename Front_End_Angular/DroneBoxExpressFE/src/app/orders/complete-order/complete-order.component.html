@@ -1,0 +1,12 @@
+<section class="main_section">
+    <section class="form_section">
+        <h1 class="section_heading">Order Complete Page</h1>
+        <form class="form_flex">
+            <h2 class="section_heading_h2">Are you sure you want to Complete the Current Order</h2>
+            <div class="form_buttons_div">
+                <button class="a_button_inside" (click)="completeOrder(order.id)">Complete</button>
+                <a class="a_button_inside" routerLink="/viewOrder/{{order.id}}">Back</a>
+            </div>
+        </form>
+    </section>
+</section>
