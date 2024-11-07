@@ -1,9 +1,11 @@
+from mailtrap import Address
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .auth import TokenManager, auth
-from models.UserModel import UserModel
 from DataBase import db
+from ThirdPartyServices.mailtrap import client, register_mail, register_staff
+from models.UserModel import UserModel
+from .auth import TokenManager, auth
 
 
 def generate_user(data, is_staff: bool):
@@ -25,9 +27,12 @@ class UserManager:
         is_staff = False
         user = generate_user(user_data, is_staff)
         try:
+            # email_address to be replaced with user.email at production
+            register_mail.to.append(Address(email="martin1987bg@gmail.com"))
+            client.send(register_mail)
+
             db.session.add(user)
             db.session.flush()
-            # Add Email Service
             return user
         except Exception as ex:
             raise BadRequest(str(ex))
@@ -37,9 +42,12 @@ class UserManager:
         is_staff = staff_data["is_staff"]
         user = generate_user(staff_data, is_staff)
         try:
+            # email_address to be replaced with user.email at production
+            register_staff.to.append(Address(email="martin1987bg@gmail.com"))
+            client.send(register_staff)
+
             db.session.add(user)
             db.session.flush()
-            # Add Email Service
             return user
         except Exception as ex:
             raise BadRequest(str(ex))
