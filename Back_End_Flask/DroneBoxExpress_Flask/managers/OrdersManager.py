@@ -33,7 +33,9 @@ class OrdersManager:
 
     @staticmethod
     def list_orders_user(user_id):
-        user_orders = db.session.execute(db.select(OrdersModel).filter_by(order_user=user_id)).scalars()
+        user_orders = db.session.execute(
+            db.select(OrdersModel).filter_by(order_user=user_id)
+        ).scalars()
         if user_orders:
             return user_orders
         else:
@@ -41,7 +43,9 @@ class OrdersManager:
 
     @staticmethod
     def get_order_details(id_):
-        current_order = db.session.execute(db.select(OrdersModel).filter_by(id=id_)).scalar()
+        current_order = db.session.execute(
+            db.select(OrdersModel).filter_by(id=id_)
+        ).scalar()
         user = auth.current_user()
         if current_order:
             if user.is_staff:

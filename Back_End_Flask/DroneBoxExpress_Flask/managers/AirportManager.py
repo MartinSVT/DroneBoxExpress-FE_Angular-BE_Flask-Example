@@ -1,6 +1,7 @@
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
-from models.AirportModel import AirportModel
+
 from DataBase import db
+from models.AirportModel import AirportModel
 
 
 class AirportManager:
@@ -24,7 +25,9 @@ class AirportManager:
 
     @staticmethod
     def get_airport_details(id_):
-        current_airport = db.session.execute(db.select(AirportModel).filter_by(id=id_)).scalar()
+        current_airport = db.session.execute(
+            db.select(AirportModel).filter_by(id=id_)
+        ).scalar()
         if current_airport:
             return current_airport
         else:
@@ -34,7 +37,9 @@ class AirportManager:
     def update_airport(data, id_):
         current_airport = AirportManager.get_airport_details(id_)
         if data["airport_name"] != current_airport.airport_name:
-            if AirportModel.query.filter(AirportModel.airport_name == data["airport_name"]).first():
+            if AirportModel.query.filter(
+                AirportModel.airport_name == data["airport_name"]
+            ).first():
                 raise Unauthorized("That airport name is taken")
             else:
                 current_airport.airport_name = data["airport_name"]

@@ -30,7 +30,7 @@ class UserFactory(BaseFactory):
     class Meta:
         model = UserModel
 
-    username = factory.Sequence(lambda n: 'valid_username_%d' % n)
+    username = factory.Sequence(lambda n: "valid_username_%d" % n)
     email = factory.LazyAttribute(lambda o: "%s@abv.bg" % o.username)
     password = factory.Faker("password")
     first_name = factory.Faker("first_name")
@@ -42,7 +42,7 @@ class AirportFactory(BaseFactory):
     class Meta:
         model = AirportModel
 
-    airport_name = factory.Sequence(lambda n: 'Airport %d' % n)
+    airport_name = factory.Sequence(lambda n: "Airport %d" % n)
     longitude = factory.Sequence(lambda n: random.randint(1, 300))
     latitude = factory.Sequence(lambda n: random.randint(1, 300))
 
@@ -71,8 +71,8 @@ class NewsArticlesFactory(BaseFactory):
     class Meta:
         model = NewsArticleModel
 
-    article_title = factory.Sequence(lambda n: 'Title %d' % n)
-    article_content = factory.Sequence(lambda n: 'Content %d' % n)
+    article_title = factory.Sequence(lambda n: "Title %d" % n)
+    article_content = factory.Sequence(lambda n: "Content %d" % n)
     created_date = factory.Faker("date_time")
     updated_date = factory.Faker("date_time")
     article_user = factory.SubFactory(UserFactory)

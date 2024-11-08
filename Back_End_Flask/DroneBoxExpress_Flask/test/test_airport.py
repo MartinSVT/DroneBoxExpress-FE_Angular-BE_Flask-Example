@@ -1,6 +1,6 @@
 from models.AirportModel import AirportModel
-from test.factories import UserFactory, AirportFactory
 from test.base import BaseTestCase, generate_token
+from test.factories import UserFactory, AirportFactory
 
 
 class TestAirports(BaseTestCase):
@@ -28,9 +28,7 @@ class TestAirports(BaseTestCase):
         data["airport_name"] = 6
         response = self.client.post("/airports", headers=headers, json=data)
         self.assertEqual(response.status_code, 400)
-        expected_msg = (
-            "Invalid fields {'airport_name': ['Not a valid string.']}"
-        )
+        expected_msg = "Invalid fields {'airport_name': ['Not a valid string.']}"
         self.assertEqual(response.json["message"], expected_msg)
         news = AirportModel.query.all()
         self.assertEqual(len(news), 0)
@@ -60,8 +58,12 @@ class TestAirports(BaseTestCase):
         token = generate_token(user)
         headers = {"Authorization": f"TOKEN {token}"}
         airport = AirportFactory()
-        response = self.client.put(f"/airports/{airport.id}/", headers=headers, json=self.correct_airport_data)
-        self.assertEqual(response.json["airport_name"], self.correct_airport_data["airport_name"])
+        response = self.client.put(
+            f"/airports/{airport.id}/", headers=headers, json=self.correct_airport_data
+        )
+        self.assertEqual(
+            response.json["airport_name"], self.correct_airport_data["airport_name"]
+        )
 
     def test_delete_airport(self):
         user = UserFactory(is_staff=True)

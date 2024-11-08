@@ -14,4 +14,7 @@ class CreateAirportSchema(BaseAirportSchema):
     @validates("airport_name")
     def validates_airport_name(self, airport_name):
         if AirportModel.query.filter(AirportModel.airport_name == airport_name).first():
-            raise ValidationError("That airport name is taken", field_names=["airport_name"], )
+            raise ValidationError(
+                "That airport name is taken",
+                field_names=["airport_name"],
+            )

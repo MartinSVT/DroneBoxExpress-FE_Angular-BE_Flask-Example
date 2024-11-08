@@ -2,9 +2,9 @@ from unittest.mock import patch
 
 from managers.auth import verify_token
 from models.UserModel import UserModel
+from test.base import BaseTestCase, generate_token
 from test.factories import UserFactory
 from test.mock_functions import mock_email
-from test.base import BaseTestCase, generate_token
 
 
 class TestUsersRegister(BaseTestCase):

@@ -12,7 +12,7 @@ app = create_app(environment)
 def handle_preflight():
     if request.method == "OPTIONS":
         res = Response()
-        res.headers['X-Content-Type-Options'] = '*'
+        res.headers["X-Content-Type-Options"] = "*"
         return res
 
 
@@ -23,10 +23,24 @@ def commit_transaction_on_teardown(exception=None):
             db.session.commit()
         except Exception:
             db.session.rollback()
-            return jsonify({"error": "An error occurred while saving data. Please try again later."}), 500
+            return (
+                jsonify(
+                    {
+                        "error": "An error occurred while saving data. Please try again later."
+                    }
+                ),
+                500,
+            )
     else:
         db.session.rollback()
-        return jsonify({"error": "An unexpected error occurred. Please contact support if the issue persists."}), 500
+        return (
+            jsonify(
+                {
+                    "error": "An unexpected error occurred. Please contact support if the issue persists."
+                }
+            ),
+            500,
+        )
 
 
 @app.teardown_appcontext
@@ -35,5 +49,5 @@ def shutdown_session(response):
     return response
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

@@ -12,17 +12,28 @@ class CreateRoutesSchema(Schema):
     @validates("cost_per_kg")
     def validates_cost_per_kg(self, cost_per_kg):
         if cost_per_kg < 0:
-            raise ValidationError("Must be Positive Number", field_names=["cost_per_kg"], )
+            raise ValidationError(
+                "Must be Positive Number",
+                field_names=["cost_per_kg"],
+            )
 
     @validates("origin_airport")
     def validates_origin_airport(self, origin_airport):
         if not AirportModel.query.filter(AirportModel.id == origin_airport).first():
-            raise ValidationError("No such Airport", field_names=["origin_airport"], )
+            raise ValidationError(
+                "No such Airport",
+                field_names=["origin_airport"],
+            )
 
     @validates("destination_airport")
     def validates_destination_airport(self, destination_airport):
-        if not AirportModel.query.filter(AirportModel.id == destination_airport).first():
-            raise ValidationError("No such Airport", field_names=["destination_airport"], )
+        if not AirportModel.query.filter(
+            AirportModel.id == destination_airport
+        ).first():
+            raise ValidationError(
+                "No such Airport",
+                field_names=["destination_airport"],
+            )
 
     @validates_schema
     def validate_airports(self, data, **kwargs):

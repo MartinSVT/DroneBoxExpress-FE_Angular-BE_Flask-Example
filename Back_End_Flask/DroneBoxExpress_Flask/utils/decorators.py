@@ -1,4 +1,5 @@
 from functools import wraps
+
 from flask import request
 from werkzeug.exceptions import BadRequest, Forbidden
 
@@ -14,7 +15,9 @@ def validate_schema(schema_name):
             if errors:
                 raise BadRequest(f"Invalid fields {errors}")
             return f(*args, **kwargs)
+
         return decorated_function
+
     return decorator
 
 
@@ -25,5 +28,7 @@ def permission_required():
             if not current_user.is_staff:
                 raise Forbidden("You do not have permissions")
             return func(*args, **kwargs)
+
         return wrapper
+
     return decorator

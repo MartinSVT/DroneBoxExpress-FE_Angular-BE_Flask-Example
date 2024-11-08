@@ -1,10 +1,21 @@
-from flask_restful import Resource
 from flask import request
-from utils.decorators import validate_schema, permission_required
-from schemas.request.UserSchema import RegisterUserSchema, RegisterStaffSchema, LoginUserSchema, UpdateUserSchema, PasswordChangeSchema
-from schemas.response.UserResponseSchema import ResponseRegisterUser, ResponseUserDetails, ResponseUserUpdate
+from flask_restful import Resource
+
 from managers.UserManager import UserManager
 from managers.auth import auth
+from schemas.request.UserSchema import (
+    RegisterUserSchema,
+    RegisterStaffSchema,
+    LoginUserSchema,
+    UpdateUserSchema,
+    PasswordChangeSchema,
+)
+from schemas.response.UserResponseSchema import (
+    ResponseRegisterUser,
+    ResponseUserDetails,
+    ResponseUserUpdate,
+)
+from utils.decorators import validate_schema, permission_required
 
 
 class RegisterUser(Resource):

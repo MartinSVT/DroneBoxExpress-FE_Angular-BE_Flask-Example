@@ -6,4 +6,3 @@ class RoutesResponseSchema(Schema):
     cost_per_kg = fields.Float(required=True)
     origin_airport = fields.Int(required=True)
     destination_airport = fields.Int(required=True)
-    

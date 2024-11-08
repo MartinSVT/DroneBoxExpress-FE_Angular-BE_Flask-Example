@@ -1,6 +1,7 @@
 from werkzeug.exceptions import BadRequest, NotFound
-from models.RoutesModel import RoutesModel
+
 from DataBase import db
+from models.RoutesModel import RoutesModel
 
 
 class RoutesManager:
@@ -24,7 +25,9 @@ class RoutesManager:
 
     @staticmethod
     def get_route_details(id_):
-        current_route = db.session.execute(db.select(RoutesModel).filter_by(id=id_)).scalar()
+        current_route = db.session.execute(
+            db.select(RoutesModel).filter_by(id=id_)
+        ).scalar()
         if current_route:
             return current_route
         else:

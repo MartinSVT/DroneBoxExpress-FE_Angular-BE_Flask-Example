@@ -1,6 +1,7 @@
-from marshmallow import Schema, fields, validates_schema, ValidationError, validate, validates
-from utils.schema_validators import must_not_be_blank
+from marshmallow import Schema, fields, ValidationError, validates
+
 from managers.auth import auth
+from utils.schema_validators import must_not_be_blank
 
 
 class CreateNewsArticleSchema(Schema):
@@ -16,4 +17,3 @@ class CreateNewsArticleSchema(Schema):
                 "Logged in User is different than the intended owner of the News Article",
                 field_names=["article_user"],
             )
-

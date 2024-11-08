@@ -2,8 +2,8 @@ from unittest.mock import patch
 
 from models.OrdersModel import OrdersModel
 from models.RoutesModel import RoutesModel
-from test.factories import UserFactory, RouteFactory, AirportFactory, OrderFactory
 from test.base import BaseTestCase, generate_token
+from test.factories import UserFactory, RouteFactory, AirportFactory, OrderFactory
 from test.mock_functions import mock_email
 
 

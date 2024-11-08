@@ -54,7 +54,9 @@ class UserManager:
 
     @staticmethod
     def login_user(data):
-        user = db.session.execute(db.select(UserModel).filter_by(username=data["username"])).scalar()
+        user = db.session.execute(
+            db.select(UserModel).filter_by(username=data["username"])
+        ).scalar()
         if not user or not check_password_hash(user.password, data["password"]):
             raise BadRequest("Invalid username or password")
         return TokenManager.encode_token(user)
@@ -88,6 +90,8 @@ class UserManager:
         user = auth.current_user()
         if not check_password_hash(user.password, pass_data["old_password"]):
             raise BadRequest("Invalid password")
-        user.password = generate_password_hash(pass_data["new_password1"], method='pbkdf2:sha256')
+        user.password = generate_password_hash(
+            pass_data["new_password1"], method="pbkdf2:sha256"
+        )
         db.session.add(user)
         db.session.flush()

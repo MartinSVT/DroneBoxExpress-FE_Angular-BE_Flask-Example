@@ -1,7 +1,8 @@
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
-from models.NewsArticleModel import NewsArticleModel
+
 from DataBase import db
 from managers.auth import auth
+from models.NewsArticleModel import NewsArticleModel
 
 
 class NewsArticleManager:
@@ -16,7 +17,9 @@ class NewsArticleManager:
     @staticmethod
     def get_single_article(id_):
         user = auth.current_user()
-        current_article = db.session.execute(db.select(NewsArticleModel).filter_by(id=id_)).scalar()
+        current_article = db.session.execute(
+            db.select(NewsArticleModel).filter_by(id=id_)
+        ).scalar()
         if current_article:
             if user.id == current_article.article_user:
                 return current_article

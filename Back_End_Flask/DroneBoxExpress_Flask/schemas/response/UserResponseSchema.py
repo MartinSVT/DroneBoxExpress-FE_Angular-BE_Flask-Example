@@ -14,5 +14,3 @@ class ResponseUserUpdate(ResponseRegisterUser):
 
 class ResponseUserDetails(ResponseUserUpdate):
     is_staff = fields.Bool(required=True)
-
-

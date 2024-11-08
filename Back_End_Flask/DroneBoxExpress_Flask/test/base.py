@@ -1,7 +1,8 @@
-from config import create_app
-from DataBase import db
-from managers.auth import TokenManager
 from flask_testing import TestCase
+
+from DataBase import db
+from config import create_app
+from managers.auth import TokenManager
 from models.UserModel import UserModel
 
 
@@ -17,7 +18,7 @@ def make_user_for_request(user):
         "password2": user.password,
         "first_name": "martin22",
         "last_name": "martin22",
-        "is_staff": False
+        "is_staff": False,
     }
     return dict_user
 
@@ -40,7 +41,7 @@ class BaseTestCase(TestCase):
             "password": "123456bg",
             "password2": "123456bg",
             "first_name": "martin",
-            "last_name": "martin"
+            "last_name": "martin",
         }
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
@@ -52,7 +53,7 @@ class BaseTestCase(TestCase):
                 "username": "martin",
                 "email": "martin@abv.bg",
                 "first_name": "martin",
-                "last_name": "martin"
-            }
+                "last_name": "martin",
+            },
         )
         return data["username"], data["password"]

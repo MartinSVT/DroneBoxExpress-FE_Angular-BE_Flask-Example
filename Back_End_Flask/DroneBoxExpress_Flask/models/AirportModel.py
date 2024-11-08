@@ -1,5 +1,7 @@
 from typing import List
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from DataBase import db
 from models import RoutesModel
 
@@ -7,7 +9,9 @@ from models import RoutesModel
 class AirportModel(db.Model):
     __tablename__ = "Airports"
     id: Mapped[int] = mapped_column(primary_key=True)
-    airport_name: Mapped[str] = mapped_column(db.String(50), nullable=False, unique=True)
+    airport_name: Mapped[str] = mapped_column(
+        db.String(50), nullable=False, unique=True
+    )
     longitude: Mapped[float] = mapped_column(db.Float, nullable=False)
     latitude: Mapped[float] = mapped_column(db.Float, nullable=False)
 

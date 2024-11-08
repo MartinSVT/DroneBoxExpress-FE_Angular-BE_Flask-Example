@@ -1,7 +1,16 @@
 import re
-from marshmallow import Schema, fields, validates_schema, ValidationError, validate, validates
-from models.UserModel import UserModel
+
+from marshmallow import (
+    Schema,
+    fields,
+    validates_schema,
+    ValidationError,
+    validate,
+    validates,
+)
+
 from managers.auth import auth
+from models.UserModel import UserModel
 from utils.schema_validators import must_not_be_blank
 
 
@@ -9,10 +18,10 @@ def validate_password(value):
     if len(value) < 6:
         raise ValidationError("Password must be at least 6 characters long.")
 
-    if len(re.findall(r'\d', value)) < 2:
+    if len(re.findall(r"\d", value)) < 2:
         raise ValidationError("Password must contain at least 2 digits.")
 
-    if len(re.findall(r'[a-zA-Z]', value)) < 2:
+    if len(re.findall(r"[a-zA-Z]", value)) < 2:
         raise ValidationError("Password must contain at least 2 letters.")
 
 
@@ -24,11 +33,13 @@ class RegisterUserSchema(Schema):
     first_name = fields.String(
         validate=validate.Length(min=2, max=30),
         error="First Name must be between 2 and 30 characters",
-        required=True)
+        required=True,
+    )
     last_name = fields.String(
         validate=validate.Length(min=2, max=30),
         error="Last Name must be between 2 and 30 characters",
-        required=True)
+        required=True,
+    )
 
     @validates_schema
     def validate_password(self, data, **kwargs):
@@ -41,12 +52,18 @@ class RegisterUserSchema(Schema):
     @validates("username")
     def validates_username(self, username):
         if UserModel.query.filter(UserModel.username == username).first():
-            raise ValidationError("That username is taken", field_names=["username"], )
+            raise ValidationError(
+                "That username is taken",
+                field_names=["username"],
+            )
 
     @validates("email")
     def validates_email(self, email):
         if UserModel.query.filter(UserModel.email == email).first():
-            raise ValidationError("That email is taken", field_names=["email"], )
+            raise ValidationError(
+                "That email is taken",
+                field_names=["email"],
+            )
 
 
 class RegisterStaffSchema(RegisterUserSchema):
@@ -64,25 +81,33 @@ class UpdateUserSchema(Schema):
     first_name = fields.String(
         validate=validate.Length(min=2, max=30),
         error="First Name must be between 2 and 30 characters",
-        required=True)
+        required=True,
+    )
     last_name = fields.String(
         validate=validate.Length(min=2, max=30),
         error="Last Name must be between 2 and 30 characters",
-        required=True)
+        required=True,
+    )
 
     @validates("username")
     def validates_username(self, username):
         user = auth.current_user()
         if username != user.username:
             if UserModel.query.filter(UserModel.username == username).first():
-                raise ValidationError("That username is taken", field_names=["username"], )
+                raise ValidationError(
+                    "That username is taken",
+                    field_names=["username"],
+                )
 
     @validates("email")
     def validates_email(self, email):
         user = auth.current_user()
         if email != user.email:
             if UserModel.query.filter(UserModel.email == email).first():
-                raise ValidationError("That email is taken", field_names=["email"], )
+                raise ValidationError(
+                    "That email is taken",
+                    field_names=["email"],
+                )
 
 
 class PasswordChangeSchema(Schema):
