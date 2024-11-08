@@ -1,6 +1,6 @@
 from models.AirportModel import AirportModel
 from test.factories import UserFactory, AirportFactory
-from test.test_base import BaseTestCase, generate_token
+from test.base import BaseTestCase, generate_token
 
 
 class TestAirports(BaseTestCase):

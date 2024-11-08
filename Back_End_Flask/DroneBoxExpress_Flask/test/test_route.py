@@ -1,6 +1,6 @@
 from models.RoutesModel import RoutesModel
 from test.factories import UserFactory, RouteFactory, AirportFactory
-from test.test_base import BaseTestCase, generate_token
+from test.base import BaseTestCase, generate_token
 
 
 class TestRoutes(BaseTestCase):

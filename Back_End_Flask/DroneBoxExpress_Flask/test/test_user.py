@@ -1,7 +1,10 @@
+from unittest.mock import patch
+
 from managers.auth import verify_token
 from models.UserModel import UserModel
 from test.factories import UserFactory
-from test.test_base import BaseTestCase, generate_token
+from test.mock_functions import mock_email
+from test.base import BaseTestCase, generate_token
 
 
 class TestUsersRegister(BaseTestCase):
@@ -14,6 +17,7 @@ class TestUsersRegister(BaseTestCase):
         "last_name": "martin",
     }
 
+    @patch("ThirdPartyServices.mailtrap.client.send", mock_email)
     def test_register_user_correct(self):
         self.register_user()
         users = UserModel.query.all()
@@ -167,6 +171,7 @@ class TestUsersRegister(BaseTestCase):
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
 
+    @patch("ThirdPartyServices.mailtrap.client.send", mock_email)
     def test_user_login(self):
         username, password = self.register_user()
         data = {"username": username, "password": password}
@@ -187,6 +192,7 @@ class TestStaffRegister(BaseTestCase):
         "is_staff": True,
     }
 
+    @patch("ThirdPartyServices.mailtrap.client.send", mock_email)
     def test_register_staff(self):
         user = UserFactory(is_staff=True)
         token = generate_token(user)
@@ -205,6 +211,7 @@ class TestStaffRegister(BaseTestCase):
         self.assertEqual(len(new_staff_member), 1)
         self.assertEqual(new_staff_member[0].is_staff, True)
 
+    @patch("ThirdPartyServices.mailtrap.client.send", mock_email)
     def test_register_user_via_staff_access(self):
         user = UserFactory(is_staff=True)
         token = generate_token(user)

@@ -1,6 +1,6 @@
 from models.NewsArticleModel import NewsArticleModel
 from test.factories import UserFactory, NewsArticlesFactory
-from test.test_base import BaseTestCase, generate_token
+from test.base import BaseTestCase, generate_token
 
 
 class TestNews(BaseTestCase):

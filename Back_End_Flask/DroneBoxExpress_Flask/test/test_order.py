@@ -1,12 +1,16 @@
+from unittest.mock import patch
+
 from models.OrdersModel import OrdersModel
 from models.RoutesModel import RoutesModel
 from test.factories import UserFactory, RouteFactory, AirportFactory, OrderFactory
-from test.test_base import BaseTestCase, generate_token
+from test.base import BaseTestCase, generate_token
+from test.mock_functions import mock_email
 
 
 class TestOrder(BaseTestCase):
     correct_order_data = {"weight": 80, "cost": 200, "order_route": 0, "order_user": 0}
 
+    @patch("ThirdPartyServices.mailtrap.client.send", mock_email)
     def test_order_creation(self):
         user = UserFactory(is_staff=False)
         token = generate_token(user)
