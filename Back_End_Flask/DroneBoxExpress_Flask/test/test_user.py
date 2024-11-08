@@ -1,6 +1,7 @@
-from test.test_base import BaseTestCase, generate_token
+from managers.auth import verify_token
 from models.UserModel import UserModel
 from test.factories import UserFactory
+from test.test_base import BaseTestCase, generate_token
 
 
 class TestUsersRegister(BaseTestCase):
@@ -10,7 +11,7 @@ class TestUsersRegister(BaseTestCase):
         "password": "123456bg",
         "password2": "123456bg",
         "first_name": "martin",
-        "last_name": "martin"
+        "last_name": "martin",
     }
 
     def test_register_user_correct(self):
@@ -25,8 +26,17 @@ class TestUsersRegister(BaseTestCase):
         response = self.client.post("/register-user", json=data)
         self.assertEqual(response.status_code, 400)
         error_message = response.json["message"]
-        for field in ("username", "email", "password", "password2", "first_name", "last_name"):
+
+        for field in (
+            "username",
+            "email",
+            "password",
+            "password2",
+            "first_name",
+            "last_name",
+        ):
             self.assertIn(field, error_message)
+
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
 
@@ -77,7 +87,9 @@ class TestUsersRegister(BaseTestCase):
         data["first_name"] = "m"
         response = self.client.post("/register-user", json=data)
         self.assertEqual(response.status_code, 400)
-        expected_msg = "Invalid fields {'first_name': ['Length must be between 2 and 30.']}"
+        expected_msg = (
+            "Invalid fields {'first_name': ['Length must be between 2 and 30.']}"
+        )
         self.assertEqual(response.json["message"], expected_msg)
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
@@ -87,7 +99,9 @@ class TestUsersRegister(BaseTestCase):
         data["first_name"] = "1234567890123456789012345678901"
         response = self.client.post("/register-user", json=data)
         self.assertEqual(response.status_code, 400)
-        expected_msg = "Invalid fields {'first_name': ['Length must be between 2 and 30.']}"
+        expected_msg = (
+            "Invalid fields {'first_name': ['Length must be between 2 and 30.']}"
+        )
         self.assertEqual(response.json["message"], expected_msg)
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
@@ -101,7 +115,9 @@ class TestUsersRegister(BaseTestCase):
         data["last_name"] = "m"
         response = self.client.post("/register-user", json=data)
         self.assertEqual(response.status_code, 400)
-        expected_msg = "Invalid fields {'last_name': ['Length must be between 2 and 30.']}"
+        expected_msg = (
+            "Invalid fields {'last_name': ['Length must be between 2 and 30.']}"
+        )
         self.assertEqual(response.json["message"], expected_msg)
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
@@ -111,10 +127,53 @@ class TestUsersRegister(BaseTestCase):
         data["last_name"] = "1234567890123456789012345678901"
         response = self.client.post("/register-user", json=data)
         self.assertEqual(response.status_code, 400)
-        expected_msg = "Invalid fields {'last_name': ['Length must be between 2 and 30.']}"
+        expected_msg = (
+            "Invalid fields {'last_name': ['Length must be between 2 and 30.']}"
+        )
         self.assertEqual(response.json["message"], expected_msg)
         users = UserModel.query.all()
         self.assertEqual(len(users), 0)
+
+    def test_user_details(self):
+        user = UserFactory(is_staff=False)
+        token = generate_token(user)
+        headers = {"Authorization": f"TOKEN {token}"}
+        response = self.client.get("/user-details", headers=headers)
+        self.assertEqual(response.json["username"], user.username)
+
+    def test_user_update(self):
+        user = UserFactory(is_staff=False)
+        token = generate_token(user)
+        headers = {"Authorization": f"TOKEN {token}"}
+        data = {
+            "username": user.username,
+            "email": user.email,
+            "first_name": "martin2",
+            "last_name": "martin2",
+        }
+        response = self.client.put(
+            f"/user-update/{user.id}/", headers=headers, json=data
+        )
+        self.assertEqual(response.json["first_name"], data["first_name"])
+        self.assertEqual(response.json["last_name"], data["last_name"])
+
+    def test_user_delete(self):
+        user = UserFactory(is_staff=False)
+        token = generate_token(user)
+        headers = {"Authorization": f"TOKEN {token}"}
+        users = UserModel.query.all()
+        self.assertEqual(len(users), 1)
+        self.client.delete(f"/user-delete/{user.id}/", headers=headers)
+        users = UserModel.query.all()
+        self.assertEqual(len(users), 0)
+
+    def test_user_login(self):
+        username, password = self.register_user()
+        data = {"username": username, "password": password}
+        response = self.client.post(f"/login", json=data)
+        self.assertEqual(response.status_code, 200)
+        answer = verify_token(response.json["token"])
+        self.assertEqual(answer.username, username)
 
 
 class TestStaffRegister(BaseTestCase):
@@ -125,17 +184,7 @@ class TestStaffRegister(BaseTestCase):
         "password2": "123456bg",
         "first_name": "martin",
         "last_name": "martin",
-        "is_staff": True
-    }
-
-    correct_data_2 = {
-        "username": "martin2",
-        "email": "martin2@abv.bg",
-        "password": "123456bg2",
-        "password2": "123456bg2",
-        "first_name": "martin2",
-        "last_name": "martin2",
-        "is_staff": False
+        "is_staff": True,
     }
 
     def test_register_staff(self):
@@ -144,24 +193,32 @@ class TestStaffRegister(BaseTestCase):
         headers = {"Authorization": f"TOKEN {token}"}
         users = UserModel.query.all()
         self.assertEqual(len(users), 1)
-        response = self.client.post("/register-staff", headers=headers, json=self.correct_data)
+        response = self.client.post(
+            "/register-staff", headers=headers, json=self.correct_data
+        )
         self.assertEqual(response.status_code, 201)
         users = UserModel.query.all()
         self.assertEqual(len(users), 2)
-        new_staff_member = UserModel.query.filter_by(username=self.correct_data["username"]).all()
+        new_staff_member = UserModel.query.filter_by(
+            username=self.correct_data["username"]
+        ).all()
         self.assertEqual(len(new_staff_member), 1)
         self.assertEqual(new_staff_member[0].is_staff, True)
 
     def test_register_user_via_staff_access(self):
-        user = UserFactory(is_staff=True, id=10)
+        user = UserFactory(is_staff=True)
         token = generate_token(user)
         headers = {"Authorization": f"TOKEN {token}"}
         users = UserModel.query.all()
         self.assertEqual(len(users), 1)
-        response = self.client.post("/register-staff", headers=headers, json=self.correct_data_2)
+        data = self.correct_data.copy()
+        data["is_staff"] = False
+        response = self.client.post("/register-staff", headers=headers, json=data)
         self.assertEqual(response.status_code, 201)
         users = UserModel.query.all()
         self.assertEqual(len(users), 2)
-        new_staff_member = UserModel.query.filter_by(username=self.correct_data_2["username"]).all()
+        new_staff_member = UserModel.query.filter_by(
+            username=self.correct_data["username"]
+        ).all()
         self.assertEqual(len(new_staff_member), 1)
         self.assertEqual(new_staff_member[0].is_staff, False)

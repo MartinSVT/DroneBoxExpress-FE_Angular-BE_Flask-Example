@@ -9,6 +9,19 @@ def generate_token(user):
     return TokenManager.encode_token(user)
 
 
+def make_user_for_request(user):
+    dict_user = {
+        "username": user.username,
+        "email": user.email,
+        "password": user.password,
+        "password2": user.password,
+        "first_name": "martin22",
+        "last_name": "martin22",
+        "is_staff": False
+    }
+    return dict_user
+
+
 class BaseTestCase(TestCase):
     def create_app(self):
         return create_app("config.TestingConfig")
