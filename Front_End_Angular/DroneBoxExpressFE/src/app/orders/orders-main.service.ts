@@ -42,7 +42,6 @@ export class OrdersMainService {
   updateOrder(id: Number, user_id: Number, route_id: String, weight: String, cost: String, orderStatus: String) {
     return this.myHttp.put<Order>(
       `${OrdersURL}/${id}/`, {
-        "id": id,
         "weight": weight,
         "cost": cost,
         "order_status": orderStatus,
@@ -54,10 +53,9 @@ export class OrdersMainService {
 
   CreateOrder(user_id: Number, route_id: String, weight: String, cost: String, orderStatus: String) {
     return this.myHttp.post<Order>(
-      `${OrdersURL}/`, {
+      `${OrdersURL}`, {
         "weight": weight,
         "cost": cost,
-        "order_status": orderStatus,
         "order_route": route_id,
         "order_user": user_id
     }

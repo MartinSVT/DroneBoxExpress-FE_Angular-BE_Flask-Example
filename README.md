@@ -3,9 +3,9 @@ A repository for an example website for airplane deliveries using Flask as Back 
   
 The project is currently being developed and it’s not in its finished state  
   
-* Back-End Status: Completed on 80%  
-* Front-End Status: Completed on 70%  
-  
+* Back-End Status: Completed on 80%  [Complete Testing Coverage, Reformant Files and Tables Naming, Move User validation to Mangares instead of Schemas]  
+* Front-End Status: Completed on 70%  [Add Staff User Register functionality, Add Change Password Functionality, Add Profile Picture Functionality]  
+    
 The web project is of an imaginary company for delivering packages using drones and predetermined routes, the idea is that the web application has multiple functionalities and acts as both customer platform and staff platform. Depending on the user profile type that is currently logged in, the web application either acts as a platform to create/update new airports, routes and news articles or acts as a customer platform where order information can be viewed and individual orders can be placed, modified and deleted. The web application notifies the user for changes to his/her orders status via email. There are 2 user profile types in the application staff member and platform user. The front end is developed with Angular 16 while the backend is developed using Flask.  
   
 User Profiles Types:  

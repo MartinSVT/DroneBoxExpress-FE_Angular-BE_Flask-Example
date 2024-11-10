@@ -32,7 +32,6 @@ export class CoreMainService {
   updateNewsArticle(id: Number, article_user: Number, article_title: String, article_content: String) {
     return this.myHttp.put<News>(
       `${ListNewsURL}/${id}/`, {
-        "id": id,
         "article_title": article_title,
         "article_content": article_content,
         "article_user": article_user,

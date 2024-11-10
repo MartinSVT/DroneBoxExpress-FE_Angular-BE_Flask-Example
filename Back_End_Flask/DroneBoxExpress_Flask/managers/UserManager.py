@@ -1,9 +1,9 @@
-from mailtrap import Address
+import mailtrap as mt
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from DataBase import db
-from ThirdPartyServices.mailtrap import client, register_mail, register_staff
+from ThirdPartyServices.mailtrap import client
 from models.UserModel import UserModel
 from .auth import TokenManager, auth
 
@@ -27,12 +27,19 @@ class UserManager:
         is_staff = False
         user = generate_user(user_data, is_staff)
         try:
-            # email_address to be replaced with user.email at production
-            register_mail.to.append(Address(email="martin1987bg@gmail.com"))
-            client.send(register_mail)
-
             db.session.add(user)
             db.session.flush()
+            # email_address to be replaced with user.email at production
+            register_mail = mt.Mail(
+                sender=mt.Address(
+                    email="droneboxexpress@demomailtrap.com", name="DroneBoxExpress Team"
+                ),
+                to=[mt.Address(email="martin1987bg@gmail.com")],
+                subject=f"DroneBoxExpress Registration {user.id}",
+                text=f"You have successfully made a Registration with Drone Boxe Express Ltd.\n"
+                     f"Your username is {user.username} with an id {user.id}",
+            )
+            client.send(register_mail)
             return user
         except Exception as ex:
             raise BadRequest(str(ex))
@@ -42,12 +49,19 @@ class UserManager:
         is_staff = staff_data["is_staff"]
         user = generate_user(staff_data, is_staff)
         try:
-            # email_address to be replaced with user.email at production
-            register_staff.to.append(Address(email="martin1987bg@gmail.com"))
-            client.send(register_staff)
-
             db.session.add(user)
             db.session.flush()
+            # email_address to be replaced with user.email at production
+            register_staff = mt.Mail(
+                sender=mt.Address(
+                    email="droneboxexpress@demomailtrap.com", name="DroneBoxExpress HR Team"
+                ),
+                to=[mt.Address(email="martin1987bg@gmail.com")],
+                subject=f"Welcome on Board {user.first_name} {user.last_name}",
+                text="You have been hired by Drone Boxe Express Ltd.\n"
+                     f"Your Employee ID is {user.id}",
+            )
+            client.send(register_staff)
             return user
         except Exception as ex:
             raise BadRequest(str(ex))

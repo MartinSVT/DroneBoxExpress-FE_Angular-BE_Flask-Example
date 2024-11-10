@@ -5,7 +5,7 @@ from managers.OrdersManager import OrdersManager
 from managers.auth import auth
 from schemas.request.OrdersRequestSchema import CreateUpdateOrderSchema
 from schemas.response.OrderResponseSchema import OrderResponseSchema
-from utils.decorators import validate_schema, permission_required
+from utils.decorators import validate_schema
 
 
 class CreateListOrders(Resource):
@@ -40,7 +40,6 @@ class OrdersDetailsUpdateDelete(Resource):
         return OrderResponseSchema().dump(updated_order), 201
 
     @auth.login_required
-    @permission_required()
     def delete(self, id_):
         OrdersManager.delete_order(id_)
         return 204

@@ -31,7 +31,7 @@ export class OperationsMainService {
 
   CreateAirport(airport_name: String, lon: String, lat: String) {
     return this.myHttp.post<Airport>(
-      `${AirportsURL}/`, {
+      `${AirportsURL}`, {
         "airport_name": airport_name,
         "latitude": lat,
         "longitude": lon,
@@ -41,7 +41,7 @@ export class OperationsMainService {
 
   CreateRoute(costPerKg: String, destinationAirport: String, originAirport: String) {
     return this.myHttp.post<Route>(
-      `${RoutesURL}/`, {
+      `${RoutesURL}`, {
         "cost_per_kg": costPerKg,
         "destination_airport": destinationAirport,
         "origin_airport": originAirport,
@@ -53,7 +53,6 @@ export class OperationsMainService {
     return this.myHttp.put<Airport>(
       `${AirportsURL}/${id}/`, {
         "airport_name": airportName,
-        "id": id,
         "latitude": airportLat,
         "longitude": airportLon
     })}
@@ -61,7 +60,6 @@ export class OperationsMainService {
   UpdateRoute(id: Number, costPerKg: String, destinationAirport: String, originAirport: String) {
     return this.myHttp.put<Route>(
       `${RoutesURL}/${id}/`, {
-        "id": id,
         "cost_per_kg": costPerKg,
         "destination_airport": destinationAirport,
         "origin_airport": originAirport,

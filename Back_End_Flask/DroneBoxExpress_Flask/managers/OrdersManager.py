@@ -1,8 +1,8 @@
-from mailtrap import Address
+import mailtrap as mt
 from werkzeug.exceptions import BadRequest, NotFound, Unauthorized
 
 from DataBase import db
-from ThirdPartyServices.mailtrap import client, order_mail
+from ThirdPartyServices.mailtrap import client
 from managers.auth import auth
 from models.OrdersModel import OrdersModel
 from models.enums import OrderStatus
@@ -15,9 +15,17 @@ class OrdersManager:
         try:
             db.session.add(new_order)
             db.session.flush()
+
             # email_address to be replaced with user.email at production
-            order_mail.to.append(Address(email="martin1987bg@gmail.com"))
-            order_mail.text += f"{new_order.id}"
+            order_mail = mt.Mail(
+                sender=mt.Address(
+                    email="droneboxexpress@demomailtrap.com", name="DroneBoxExpress Team"
+                ),
+                to=[mt.Address(email="martin1987bg@gmail.com")],
+                subject=f"Order Confirmation {new_order.id}",
+                text=f"We Have Received Your Order with ID: {new_order.id}",
+            )
+
             client.send(order_mail)
             return new_order
         except Exception as ex:
